@@ -10,13 +10,18 @@
     @if(empty($posts))
         {{ __('Нет ни одного поста.') }}
     @else
-        <div class="row">
-            @foreach($posts as $post)
-                <div class="col-12 col-md-4">
-                    <x-post.card :post="$post" />
+        @foreach($posts as $post)
+            <div class="mb-5">
+                <h2 class="h6">
+                    <a href="{{ route('user.posts.show', $post->id) }}">
+                        {{ $post->title }}
+                    </a>
+                </h2>
+                <div class="small text-muted">
+                    {{ now()->format('d.m.Y H:i:s') }}
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     @endif
 
 @endsection

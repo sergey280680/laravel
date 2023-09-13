@@ -32,6 +32,14 @@ class PostController extends Controller
 
     public function show($post)
     {
+        $post = (object)[
+            'id' => 123,
+            'title' => 'Title text',
+            'content' => 'If you want to <strong>generate</strong> a specific number of words',
+        ];
+
+        $posts = array_fill(0, 10, $post);
+
         return view('user.posts.show', compact('post'));
     }
 
