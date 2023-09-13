@@ -1,10 +1,8 @@
-@extends('layouts.base')
+@extends('layouts.auth')
 
-@section('page.title', "Вход Laravel")
+@section('page.title', "Страница входа")
 
 
-@section('content')
-    <h1>
-        Страница входа.
-    </h1>
+@section('auth.content')
+    <x-login.card/>
 @endsection

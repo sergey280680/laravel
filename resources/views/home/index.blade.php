@@ -1,7 +1,11 @@
-@extends('layouts.base')
+@extends('layouts.main')
 
-@section('content')
-    <h1>
-        Главная страница.
-    </h1>
+@section('page.title', "Главная страница.")
+
+@section('main.content')
+    <div class="text-center">
+        <h1>
+            {{ __('Главная страница.') }}
+        </h1>
+    </div>
 @endsection
