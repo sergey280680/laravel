@@ -9,6 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
+//        dd(23);
         $post = (object)[
             'id' => 123,
             'title' => 'Title text',
@@ -22,12 +23,14 @@ class PostController extends Controller
 
     public function create()
     {
+//        dd('create');
         return view('user.posts.create') ;
     }
 
     public function store()
     {
-        return 'Запрос создания постов';
+//        dd('store');
+        return 'Запрос на создание поста';
     }
 
     public function show($post)
@@ -45,6 +48,14 @@ class PostController extends Controller
 
     public function edit($post)
     {
+        $post = (object)[
+            'id' => 123,
+            'title' => 'Title text',
+            'content' => 'If you want to <strong>generate</strong> a specific number of words',
+        ];
+
+//        $posts = array_fill(0, 10, $post);
+
         return view('user.posts.edit', compact('post'));
     }
 
