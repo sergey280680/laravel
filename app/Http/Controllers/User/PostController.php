@@ -27,9 +27,12 @@ class PostController extends Controller
         return view('user.posts.create') ;
     }
 
-    public function store()
+    public function store(Request $request)
     {
-//        dd('store');
+        $title = $request->input('title');
+        $content = $request->input('content');
+
+//        dd($title, $content);
         return 'Запрос на создание поста';
     }
 

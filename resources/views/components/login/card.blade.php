@@ -15,6 +15,7 @@
 
     <x-card-body>
         <x-form action="{{ route('login.store') }}" method="POST">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <x-form-item class="mb-3">
                 <x-label required>{{__('Email')}}</x-label>
@@ -27,7 +28,7 @@
             </x-form-item>
 
             <x-form-item class="mb-3">
-                <x-checkbox name="remember">
+                <x-checkbox name="$agreement">
                     {{ __('Запомнить меня') }}
                 </x-checkbox>
             </x-form-item>

@@ -34,7 +34,7 @@
 
                 <x-form-item class="mb-3">
                     <x-label required>{{__('Пароль')}}</x-label>
-                    <x-input type="password" name="password"/>
+                    <x-input type="password" name="$agreement"/>
                 </x-form-item>
 
                 <x-form-item class="mb-3">
