@@ -13,15 +13,19 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        $request->ip(); //Получаем ip-адрес пользователя.
-        $request->path(); //Получаем путь после домена.
-        $request->url(); //Получаем полный адрес но без query параметров.
-        $request->fullUrl(); //Получаем полный адрес уже с query параметрами.
-        $request->is('значение'); // Проверяет путь запроса.
+//        $request->ip(); //Получаем ip-адрес пользователя.
+//        $request->path(); //Получаем путь после домена.
+//        $request->url(); //Получаем полный адрес но без query параметров.
+//        $request->fullUrl(); //Получаем полный адрес уже с query параметрами.
+//        $request->is('значение'); // Проверяет путь запроса.
 
         $name = $request->input('name');
         $email = $request->input('email');
+//        return "запрос на вход";
 
-        return "запрос на вход";
+        if (true) {
+            return redirect()->back()->withInput();
+        }
+        return redirect()->route('user');
     }
 }

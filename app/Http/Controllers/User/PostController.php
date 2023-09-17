@@ -33,7 +33,7 @@ class PostController extends Controller
         $content = $request->input('content');
 
 //        dd($title, $content);
-        return 'Запрос на создание поста';
+        return redirect()->route('user.posts.show', 123);
     }
 
     public function show($post)
@@ -62,14 +62,15 @@ class PostController extends Controller
         return view('user.posts.edit', compact('post'));
     }
 
-    public function update()
+    public function update(Request $request, $post)
     {
-        return 'Страница обновления постов';
+        return redirect()->back();
+
     }
 
-    public function delete()
+    public function delete($posts)
     {
-        return 'Страница удаления постов';
+        return redirect()->route('user.posts');
     }
 
     public function like()

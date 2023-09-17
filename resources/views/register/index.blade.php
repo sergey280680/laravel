@@ -29,12 +29,12 @@
 
                 <x-form-item class="mb-3">
                     <x-label required>{{__('Email')}}</x-label>
-                    <x-input type="email" name="email"/>
+                    <x-input type="email" name="email" />
                 </x-form-item>
 
                 <x-form-item class="mb-3">
                     <x-label required>{{__('Пароль')}}</x-label>
-                    <x-input type="password" name="$agreement"/>
+                    <x-input type="password" name="password"/>
                 </x-form-item>
 
                 <x-form-item class="mb-3">
@@ -43,7 +43,7 @@
                 </x-form-item>
 
                 <x-form-item class="mb-3">
-                    <x-checkbox name="remember">
+                    <x-checkbox name="agreement" >
                         {{ __('Я согласен на обработку пользовательских данных') }}
                     </x-checkbox>
                 </x-form-item>
