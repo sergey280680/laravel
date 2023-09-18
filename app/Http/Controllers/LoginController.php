@@ -6,26 +6,31 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+//        Получаем данные из сессии
+//        $fooo = session()->get('kuz');
+
+//        Проверяет есть ли данные с таким ключом
+//        session()->has('kuz')
+//        dd(session()->all());
+
         return view('login.index');
     }
 
     public function store(Request $request)
     {
-//        $request->ip(); //Получаем ip-адрес пользователя.
-//        $request->path(); //Получаем путь после домена.
-//        $request->url(); //Получаем полный адрес но без query параметров.
-//        $request->fullUrl(); //Получаем полный адрес уже с query параметрами.
-//        $request->is('значение'); // Проверяет путь запроса.
+//        Добавляем данные в сессию
+//        session()->put('foo', 'bar'); session(['kuz' => 'baz']); // Две анологичные функции
 
-        $name = $request->input('name');
-        $email = $request->input('email');
-//        return "запрос на вход";
+//        session()->forget('foo');  // Удаление данных 'foo' из сессии
+//        session()->flush();        // Удаление всех данных из сессии
 
-        if (true) {
-            return redirect()->back()->withInput();
-        }
+        alert(__('Добро пожаловать в Laravel'));
+
+//        if (true) {
+//            return redirect()->back()->withInput();
+//        }
         return redirect()->route('user');
     }
 }

@@ -9,3 +9,10 @@ if (!function_exists('active_link')) {
     }
 }
 
+if (!function_exists('alert')) {
+    function alert(string $value)
+    {
+        session(['alert' => $value]);
+    }
+}
+
