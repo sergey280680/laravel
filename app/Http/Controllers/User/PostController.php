@@ -15,13 +15,7 @@ class PostController extends Controller
     public function index()
     {
 //        dd(23);
-        $post = (object)[
-            'id' => 123,
-            'title' => 'Title text',
-            'content' => 'If you want to <strong>generate</strong> a specific number of words',
-        ];
-
-        $posts = array_fill(0, 10, $post);
+        $posts = Post::query()->paginate(5);
 
         return view('user.posts.index', compact('posts'));
     }
