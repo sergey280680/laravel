@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\StorePostRequest;
 use Illuminate\Http\Request;
+use Nette\Schema\ValidationException;
 
 class PostController extends Controller
 {
@@ -29,10 +31,35 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $title = $request->input('title');
-        $content = $request->input('content');
+//        $title = $request->input('title');
+//        $content = $request->input('content');
 
-//        dd($title, $content);
+//        $validated = $request->validated();
+
+//        $validated = $request->validate([
+//            'title' =>['required', 'string', 'max:100'],
+//            'content' =>['required', 'string', 'max:10000']
+//        ]);
+
+//        $validated = validator($request->all(), [
+//            'title' =>['required', 'string', 'max:100'],
+//            'content' =>['required', 'string', 'max:10000']
+//        ])->validate();
+
+//        if (true) {
+//            throw ValidationException::withMessages([
+//               'account' => __('Недостаточно средств')
+//            ]);
+//        }
+
+        $validated = validate($request->all(), [
+            'title' =>['required', 'string', 'max:100'],
+            'content' =>['required', 'string', 'max:10000']
+        ]);
+
+        dd($validated);
+
+
         alert(__('Сохранено'));
 
         return redirect()->route('user.posts.show', 123);
