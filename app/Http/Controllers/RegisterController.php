@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -13,17 +14,35 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-//        $request->has('name'); // Проверяет есть ли такой параметр в запросе и возвращает true or false
-//        $request->filled('name'); // Проверяет заполнен ли параметр или нет и возвращает true or false
-//
-//        $name = $request->input('name');
-//        $email = $request->input('email');
-//        $agreement = $request->boolean('agreement'); // Приводит параметр 'remember' к булевому значению true or false
-//        $avatar = $request->file('avatar');  // Получаем файлы загруженные в форме
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'max:50', 'email', 'unique:users'],
+            'password' => ['required', 'string', 'min:7', 'max:50', 'confirmed'],
+            'agreement' => ['accepted'],
+        ]);
 
-        if (true) {
-            return redirect()->back()->withInput();
-        }
+//#######################################################
+//        Первый способ записи данных в БД
+//        $user = new User;
+//        $user->name = $validated['name'];
+//        $user->email = $validated['email'];
+//        $user->password = bcrypt( $validated['password']);
+//        $user->save();
+//########################################################
+
+//#######################################################
+//        Второй способ записи данных в БД
+//              Рекомендуемый
+        $user = User::query()->create([
+           'name' => $validated['name'],
+           'email' => $validated['email'],
+           'password' => bcrypt($validated['password']),
+        ]);
+//########################################################
+
+
+        dd($user);
+
         return redirect()->route('user');
     }
 }

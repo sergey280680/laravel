@@ -4,6 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StorePostRequest;
+use App\Models\Post;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Nette\Schema\ValidationException;
 
@@ -54,10 +57,21 @@ class PostController extends Controller
 
         $validated = validate($request->all(), [
             'title' =>['required', 'string', 'max:100'],
-            'content' =>['required', 'string', 'max:10000']
+            'content' =>['required', 'string', 'max:10000'],
+            'published_at' =>['nullable', 'string', 'date'],
+            'published'=>['nullable', 'boolean'],
         ]);
 
-        dd($validated);
+        $post = Post::query()->firstOrCreate([
+            'user_id' => User::query()->value('id'),
+            'title' => $validated['title'],
+        ],[
+           'content' => $validated['content'],
+           'published_at' => new Carbon($validated['published_at']) ?? null,
+           'published' => $validated['published'] ?? false,
+        ]);
+
+        dd($post->toArray());
 
 
         alert(__('Сохранено'));
