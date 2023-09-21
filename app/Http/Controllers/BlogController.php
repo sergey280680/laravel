@@ -126,7 +126,7 @@ class BlogController extends Controller
     //###############  Получаем одну запись из БД третий способ ############################
 
     //##############################  работа через кэш ############################
-    public function show(Request $request,Post $post)
+    public function show(Request $request, $post)
     {
         $post = cache()->remember(
             key: "posts.{$post}",
