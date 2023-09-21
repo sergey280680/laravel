@@ -96,18 +96,46 @@ class BlogController extends Controller
         return view('blog.index', compact('posts', 'categories'));
     }
 
-    public function show($post)
-    {
-        $post = (object)[
-            'id' => 123,
-            'title' => 'Title text',
-            'content' => 'If you want to <strong>generate</strong> a specific number of words',
-        ];
+    //###############  Получаем одну запись из БД первый способ ############################
 
-        $posts = array_fill(0, 10, $post);
+//    public function show(Request $request,Post $post)
+//    {
+//        return view('blog.show', compact('post'));
+//    }
+
+    //###############  Получаем одну запись из БД второй способ ############################
+
+//    public function show(Request $request, $post)
+//    {
+//###############  Получаем одну запись из БД  ############################
+//        Select * from posts order by published_at ask limit 1
+//        $post = Post::query()->oldest('published_at')->first(['id', 'title']);
+//        Select * from posts order by published_at ask limit 1 or Error
+//        $post = Post::query()->oldest('published_at')->firstOrFail(['id', 'title']);
+//
+//        Select id, title, content from posts where id = 123 limit 1
+//        $post = Post::query()->find($post, ['id', 'title', 'content']);
+//        $post = Post::query()->findOrFail($post, ['id', 'title', 'content']);
+//
+//        Select id, title, content from posts where id in (1,2,3,5)
+//        $post = Post::query()->find([1,2,3,5], ['id', 'title', 'published_at']);
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//        return view('blog.show', compact('post'));
+//    }
+
+    //###############  Получаем одну запись из БД третий способ ############################
+
+    //##############################  работа через кэш ############################
+    public function show(Request $request,Post $post)
+    {
+        $post = cache()->remember(
+            key: "posts.{$post}",
+            ttl: now()->addHour(),
+            callback: function () use ($post) {
+            return Post::query()->findOrFail($post);
+        });
 
         return view('blog.show', compact('post'));
-
     }
 
     public function like($post)
