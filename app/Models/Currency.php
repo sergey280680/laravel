@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    use HasFactory;
 
 //  Eloquent предполагает, что первичный ключ представляет собой увеличивающееся
 //  целочисленное значение, а это означает, что Eloquent автоматически преобразует
@@ -20,26 +19,8 @@ class Currency extends Model
 //    заполнятся в БД если тут не указоно поле которое будут пытаться заполнить
 //    оно его пропустит и не выдаст ошибку
     protected $fillable = [
-       'id', 'name', 'price',
-        'active', 'sort',
-    ];
-
-//    Скрывает поля которые не нужно показывать
-    protected $hidden =[
-        'price'
-    ];
-
-//    Для каждого свойсва указываем тип данных
-    protected $casts = [
-      'price' => 'float',
-      'active' => 'boolean',
-      'sort' => 'integer',
-    ];
-
-//    Кастомные даты когда хотим чтобы они автоматом преобразовывались
-//    в объект класса Carbon
-    protected $dates = [
-      'active_at',
+       'id',
+       'name',
     ];
 
 }

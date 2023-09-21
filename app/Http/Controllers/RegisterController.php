@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Currency;
+use App\Models\Donate;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -33,15 +35,28 @@ class RegisterController extends Controller
 //#######################################################
 //        Второй способ записи данных в БД
 //              Рекомендуемый
-        $user = User::query()->create([
-           'name' => $validated['name'],
-           'email' => $validated['email'],
-           'password' => bcrypt($validated['password']),
-        ]);
+//        $user = User::query()->create([
+//           'name' => $validated['name'],
+//           'email' => $validated['email'],
+//           'password' => bcrypt($validated['password']),
+//        ]);
 //########################################################
 
-
-        dd($user);
+//        $currencies = Currency::query()->get();
+//
+////        dd($currencies);
+////        dd($currencies->random()->id);
+//
+//        for ($i =0; $i < 10000; $i++){
+//            Donate::query()->forceCreate([
+//                'created_at' => now()->subDays(rand(0, 1000)),
+//                'currency_id' => $currencies->random()->id,
+//                'amount' => rand(1, 1000)
+//            ]);
+//        }
+//
+//
+//        dd('Ok');
 
         return redirect()->route('user');
     }
