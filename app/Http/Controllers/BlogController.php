@@ -3,97 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Faker\Provider\Lorem;
+//use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+//use PhpParser\Builder;
+use function Laravel\Prompts\search;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $category_id = $request->input('category_id');
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:50'],
+            'from_date' => ['nullable', 'string', 'date'],
+            'to_date' => ['nullable', 'string', 'date', 'after:from_date'],
+            'tag' => ['nullable', 'string', 'max:10'],
+        ]);
 
-        $post = (object)[
-            'id' => 123,
-            'title' => 'Title text',
-            'content' => 'If you want to <strong>generate</strong> a specific number of words',
-            'category_id' => 1,
-        ];
+        $query = Post::query()
+            ->where('published', true)
+            ->whereNotNull('published_at');
 
-        $posts = array_fill(0, 10, $post);
+        if ($search = $validated['search'] ?? null) {
+            $query->where('title', 'like', "%{$search}%");
+        }
 
-        $posts =array_filter($posts, function ($post) use ($search, $category_id) {
-            if($search && ! str_contains(strtolower($post->title), strtolower($search))) {
-                return false;
-            }
+        if ($fromDate = $validated['from_date'] ?? null) {
+            $query->where('published_at', '>=', new Carbon($fromDate));
+        }
 
-            if($category_id && $post->category_id != $category_id) {
-                return false;
-            }
+        if ($toDate = $validated['to_date'] ?? null) {
+            $query->where('published_at', '<=', new Carbon($toDate));
+        }
 
-            return  true;
-        });
+        if ($tag = $validated['tag'] ?? null) {
+            $query->whereJsonContains('tags', $tag);
+        }
 
+        $posts = $query->latest('published_at')->paginate(3);
 
-        $categories = [
-            null => __('Все категории'),
-            1 => __('Первая категория'),
-            2 => __('Вторая категория'),
-            ];
-
-        // Select * from posts
-        $posts = Post::all();
-        // Select * from posts
-        $posts = Post::query()->get();
-
-        // Select 'id', 'title', 'published_at' from posts
-        $posts = Post::all(['id', 'title', 'published_at']);
-        // Select 'id', 'title', 'published_at' from posts
-        $posts = Post::query()->get(['id', 'title', 'published_at']);
-
-        // Select * from posts выводит 12 постов
-        $posts = Post::query()->limit(12)->get();
-
-        // Select * from posts выводит 12 постов но пропускает первые 10
-        $posts = Post::query()->limit(12)->offset(10)->get();
-
-// ############## Пагинация кастом ################################
-//        Пагинация
-//        $validated = $request->validate([
-//           'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
-//           'page' => ['nullable', 'integer', 'min:1', 'max:100'],
-//        ]);
-//
-//        $page = $validated['page'] ?? 1;
-//        $limit = $validated['limit'] ?? 4;
-//        $offset = $limit * ($page - 1);
-//
-//        $posts = Post::query()->limit($limit)->offset($offset)->get();
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-// ###################################################################
-//        Пагинация Laravel
-//        $posts = Post::query()->paginate(6);
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-// ###################################################################
-//        Пагинация Laravel c сортировкой
-        // сортировка показывает сначала старые
-//        $posts = Post::query()->orderBy('published_at', 'asc')->paginate(6);
-//        $posts = Post::query()->oldest('published_at')->paginate(6);
-        // сортировка показывает сначала новые
-//        $posts = Post::query()->orderBy('published_at', 'desc')->paginate(6);
-//        $posts = Post::query()->latest('published_at')->paginate(6);
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-// ############## Сортировка по нескольким полям ####################
-        $posts = Post::query()
-            ->latest('published_at')
-            ->oldest('id')
-            ->paginate(6);
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-        return view('blog.index', compact('posts', 'categories'));
+        return view('blog.index', compact('posts'));
     }
 
     //###############  Получаем одну запись из БД первый способ ############################
